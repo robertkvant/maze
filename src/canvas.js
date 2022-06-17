@@ -10,8 +10,8 @@ export class MazeCanvas {
     constructor(maze) {
         this.canvas = document.getElementById('canvas');
         this.ctx = canvas.getContext('2d');
-        this.width = (this.canvas.width / maze.length)
-        this.maze = maze
+        this.maze = maze.maze
+        this.width = (this.canvas.width / this.maze.length)
         this.init()
     }
     // Draw a top border
