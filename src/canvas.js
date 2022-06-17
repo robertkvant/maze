@@ -42,8 +42,26 @@ export class MazeCanvas {
         this.ctx.lineTo(x, y + width);
         this.ctx.stroke();
     }
+
+    // Clear the canvas
+    clearCanvas(){
+        this.ctx.clearRect(0, 0, 
+            canvas.width, canvas.height);
+    }
+
+    // Restore canvas state
+    restoreCanvas(){
+        this.ctx.restore();
+    }
+
+    // Save canvas state
+    saveState(){
+        this.ctx.save();
+    }
+
     // Initialize maze
     init() {
+        this.clearCanvas()
         for (let y = 0; y < this.maze.length; y++) {
             for (let x = 0; x < this.maze[y].length; x++) {
                 const xPos = x * this.width
@@ -62,6 +80,7 @@ export class MazeCanvas {
                 }
             }
         }
+        this.saveState()
     }
 }
 

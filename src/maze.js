@@ -105,5 +105,11 @@ export class Maze {
             this.DFS(n[0], n[1], visited)
         }
     }
+
+    // Walk the maze from (fromRow, fromCol) to 
+    // (toRow, toCol)
+    walkTheMaze(fromRow, fromCol, toRow, toCol){
+        this.maze[fromRow][fromCol] = this.maze[fromRow][fromCol] | 0b00001
+    }
 }
 
