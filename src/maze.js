@@ -6,35 +6,35 @@ const BORDER = {
     LEFT: 0b10000
 }
 
-export function Maze(nbrOfRows, nbrOfCols) {
+export class Maze {
 
-    // Create empty (nbrOfRows x nbrOfCols) array
-    const maze = Array.from({ length: nbrOfRows }, e =>
-        Array.from({ length: nbrOfCols }, e => 0));
+    constructor(nbrOfRows, nbrOfCols){
+        // Create empty (nbrOfRows x nbrOfCols) array
+        this.maze = Array.from({ length: nbrOfRows }, e =>
+            Array.from({ length: nbrOfCols }, e => 0));
 
-    // Assign each cell on rows 0 -> (rows - 1) with a
-    // right and bottom border, except last 
-    // cell (only bottom border)
-    maze.forEach((row, index) => {
-        if (index < nbrOfRows - 1) {
-            row.fill(BORDER.RIGHT | BORDER.BOTTOM,
-                0, nbrOfCols - 1)
-            row[nbrOfCols - 1] = BORDER.BOTTOM;
-        }
-    });
+        // Assign each cell on rows 0 -> (rows - 1) with a
+        // right and bottom border, except last 
+        // cell (only bottom border)
+        this.maze.forEach((row, index) => {
+            if (index < nbrOfRows - 1) {
+                row.fill(BORDER.RIGHT | BORDER.BOTTOM,
+                    0, nbrOfCols - 1)
+                row[nbrOfCols - 1] = BORDER.BOTTOM;
+            }
+        });
 
-    // Assign a right border to the cells on 
-    // the last row (except last column) 
-    maze[nbrOfRows - 1].fill(BORDER.RIGHT,
-        0, nbrOfCols - 1)
+        // Assign a right border to the cells on 
+        // the last row (except last column) 
+        this.maze[nbrOfRows - 1].fill(BORDER.RIGHT,
+            0, nbrOfCols - 1)
 
-    
-    //Generate maze
-    createMaze()
-
+        //Generate maze
+        this.createMaze()
+    }
 
     // Returns adjacent cells row and column position 
-    function getNeighbours(row, col) {
+    getNeighbours(row, col) {
         let c = []
         c.push([row - 1, col])
         c.push([row, col + 1])
@@ -43,33 +43,35 @@ export function Maze(nbrOfRows, nbrOfCols) {
         return c.filter((p) =>
             p.every((n) =>
                 n >= 0 &&
-                n < maze[0].length)
+                n < this.maze[0].length)
         )
     }
 
     // Get random element from array
-    function getRandomElement(arr) {
+    getRandomElement(arr) {
         const rand = Math.floor(Math.random() * arr.length);
         return arr[rand]
     }
 
     // Return random unvisited neighbour
-    function randomUnvisitedNeighbour(row, col, visited) {
-        let n = getNeighbours(row, col).filter((a) =>
+    randomUnvisitedNeighbour(row, col, visited) {
+        let n = this.getNeighbours(row, col).filter((a) =>
             visited.every((e) =>
                 a[0] !== e[0] ||
                 a[1] !== e[1]
             )
         )
-        return getRandomElement(n)
+        return this.getRandomElement(n)
     }
 
     // Remove border between (fromRow,fromCol) and (toRow,toCol)
-    function removeBorder(fromRow, fromCol, toRow, toCol) {
+    removeBorder(fromRow, fromCol, toRow, toCol) {
         const removeBottomBorder = (r, c) =>
-            maze[r][c] = maze[r][c] & ~BORDER.BOTTOM
+            this.maze[r][c] = this.maze[r][c] 
+                & ~BORDER.BOTTOM
         const removeRightBorder = (r, c) =>
-            maze[r][c] = maze[r][c] & ~BORDER.RIGHT
+            this.maze[r][c] = this.maze[r][c] 
+                & ~BORDER.RIGHT
         //Down
         if (toRow === fromRow + 1) {
             removeBottomBorder(fromRow, fromCol)
@@ -89,21 +91,19 @@ export function Maze(nbrOfRows, nbrOfCols) {
     }
 
     // Create a random maze
-    function createMaze() {
+    createMaze() {
         let visited = []
-        DFS(0, 0, visited)
+        this.DFS(0, 0, visited)
     }
 
-    // Generate maze with a random depth first search
-    function DFS(row, col, visited) {
+    // Generate a maze with a random depth first search
+    DFS(row, col, visited) {
         visited.push([row, col])
-        while (randomUnvisitedNeighbour(row, col, visited)) {
-            let n = randomUnvisitedNeighbour(row, col, visited)
-            removeBorder(row, col, n[0], n[1])
-            DFS(n[0], n[1], visited)
+        while (this.randomUnvisitedNeighbour(row, col, visited)) {
+            let n = this.randomUnvisitedNeighbour(row, col, visited)
+            this.removeBorder(row, col, n[0], n[1])
+            this.DFS(n[0], n[1], visited)
         }
     }
-
-    return maze
 }
 
