@@ -6,9 +6,16 @@ const BORDER = {
     LEFT: 0b10000
 }
 
+const SQUARE = 0b00001
+
 export class Maze {
 
-    constructor(nbrOfRows, nbrOfCols){
+    constructor(nbrOfRows, nbrOfCols) {
+
+        if (nbrOfRows !== nbrOfCols) {
+            throw "Number of rows must be equal to number of columns";
+        }
+
         // Observers notified when walker position is changed
         this.observers = []
         // Create empty (nbrOfRows x nbrOfCols) array
@@ -26,13 +33,14 @@ export class Maze {
             }
         });
 
-        // Assign a right border to the cells on 
+        // Assign a right border to the cells at 
         // the last row (except last column) 
         this.maze[nbrOfRows - 1].fill(BORDER.RIGHT,
             0, nbrOfCols - 1)
 
         //Generate maze
         this.createMaze()
+        this.initSquare()
     }
 
     // Returns adjacent cells row and column position 
@@ -47,6 +55,13 @@ export class Maze {
                 n >= 0 &&
                 n < this.maze[0].length)
         )
+    }
+
+    // Checks if (nRow,nCol) is a neighbour to (row,col)
+    isNeighbour(nRow, nCol, row, col) {
+        const n = this.getNeighbours(row, col)
+        return n.some((x) => x[0] === nRow
+            && x[1] === nCol)
     }
 
     // Get random element from array
@@ -69,11 +84,16 @@ export class Maze {
     // Remove border between (fromRow,fromCol) and (toRow,toCol)
     removeBorder(fromRow, fromCol, toRow, toCol) {
         const removeBottomBorder = (r, c) =>
-            this.maze[r][c] = this.maze[r][c] 
-                & ~BORDER.BOTTOM
+            this.maze[r][c] = this.maze[r][c]
+            & ~BORDER.BOTTOM
         const removeRightBorder = (r, c) =>
-            this.maze[r][c] = this.maze[r][c] 
-                & ~BORDER.RIGHT
+            this.maze[r][c] = this.maze[r][c]
+            & ~BORDER.RIGHT
+
+        if (!this.isNeighbour(toRow, toCol, fromRow, fromCol)) {
+            throw "Not neighbours!";
+        }
+
         //Down
         if (toRow === fromRow + 1) {
             removeBottomBorder(fromRow, fromCol)
@@ -89,6 +109,35 @@ export class Maze {
         //Left
         if (toCol === fromCol - 1) {
             removeRightBorder(toRow, toCol)
+        }
+    }
+
+    // Checks if there is a border between the two cells
+    borderBetween(fromRow, fromCol, toRow, toCol) {
+        const hasBottomBorder = (r, c) =>
+            (this.maze[r][c] & BORDER.BOTTOM) !== 0
+        const hasRightBorder = (r, c) =>
+            (this.maze[r][c] & BORDER.RIGHT) !== 0
+
+        if (!this.isNeighbour(toRow, toCol, fromRow, fromCol)) {
+            throw "Not neighbours!";
+        }
+
+        //Down
+        if (toRow === fromRow + 1) {
+            return hasBottomBorder(fromRow, fromCol)
+        }
+        //Up
+        if (toRow === fromRow - 1) {
+            return hasBottomBorder(toRow, toCol)
+        }
+        //Right
+        if (toCol === fromCol + 1) {
+            return hasRightBorder(fromRow, fromCol)
+        }
+        //Left
+        if (toCol === fromCol - 1) {
+            return hasRightBorder(toRow, toCol)
         }
     }
 
@@ -108,21 +157,29 @@ export class Maze {
         }
     }
 
-    // Walk the maze from (fromRow, fromCol) to 
-    // (toRow, toCol)
-    walkTheMaze(fromRow, fromCol, toRow, toCol){
-        this.maze[fromRow][fromCol] = this.maze[fromRow][fromCol] | 0b00001
-        this.notifyObservers(toRow,toCol)
+    // Place 'square' at position (0,0)
+    initSquare() {
+        this.maze[0][0] |= SQUARE
+        this.notifyObservers()
+    }
+
+    // Move square
+    moveSquare(fromRow, fromCol, toRow, toCol) {
+        if (!this.borderBetween(fromRow, fromCol, toRow, toCol)) {
+            this.maze[toRow][toCol] |= SQUARE
+            this.maze[fromRow][fromCol] &= ~SQUARE
+            this.notifyObservers()
+        }
     }
 
     // Add observer
-    addObserver(fn){
+    addObserver(fn) {
         this.observers.push(fn);
     }
 
     // Notify observers
-    notifyObservers(row,col){
-        this.observers.forEach((fn) => fn(row,col))
+    notifyObservers() {
+        this.observers.forEach((fn) => fn())
     }
 }
 

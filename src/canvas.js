@@ -6,12 +6,14 @@ const BORDER = {
     LEFT: 0b10000
 }
 
+const SQUARE = 0b00001
+
 export class MazeCanvas {
     constructor(maze) {
         this.canvas = document.getElementById('canvas');
         this.ctx = canvas.getContext('2d');
         this.maze = maze.maze
-        maze.addObserver(this.walkerPositionChanged)
+        maze.addObserver(this.squarePositionChanged.bind(this))
         this.width = (this.canvas.width / this.maze.length)
         this.init()
     }
@@ -44,19 +46,33 @@ export class MazeCanvas {
         this.ctx.stroke();
     }
 
+    // Clear square at position x y
+    clearSquare(x, y) {
+        this.ctx.clearRect(x, y,
+            this.width, this.width);
+    }
+
+    // Draw a square at position x y
+    square(x, y) {
+        this.ctx.fillStyle = 'red';
+        this.ctx.fillRect(x + (this.width/4), 
+            y + (this.width/4), (this.width / 2), 
+            (this.width / 2));
+    }
+
     // Clear the canvas
-    clearCanvas(){
-        this.ctx.clearRect(0, 0, 
+    clearCanvas() {
+        this.ctx.clearRect(0, 0,
             canvas.width, canvas.height);
     }
 
     // Restore canvas state
-    restoreCanvas(){
+    restoreCanvas() {
         this.ctx.restore();
     }
 
     // Save canvas state
-    saveState(){
+    saveState() {
         this.ctx.save();
     }
 
@@ -79,13 +95,16 @@ export class MazeCanvas {
                 if (this.maze[y][x] & BORDER.LEFT) {
                     this.leftBorder(xPos, yPos, this.width)
                 }
+                if (this.maze[y][x] & SQUARE) {
+                    this.square(xPos,yPos,this.width)
+                }
             }
         }
-        this.saveState()
     }
 
-    walkerPositionChanged(row,col){
-        console.log("Walker position changed",row,col)
+    // Square position has changed
+    squarePositionChanged() {
+        this.init()
     }
 }
 
