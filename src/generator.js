@@ -23,8 +23,8 @@ export function GenerateMaze(nbrOfRows, nbrOfCols) {
         }
     });
 
-    // Assign the cells on the last row (except last column) with 
-    // a right border
+    // Assign a right border to the cells on 
+    // the last row (except last column) 
     maze[nbrOfRows - 1].fill(BORDER.RIGHT,
         0, nbrOfCols - 1)
 
@@ -64,12 +64,12 @@ export function GenerateMaze(nbrOfRows, nbrOfCols) {
         return getRandomElement(n)
     }
 
+    // Remove border between (fromRow,fromCol) and (toRow,toCol)
     function removeBorder(fromRow, fromCol, toRow, toCol) {
         const removeBottomBorder = (r, c) =>
             maze[r][c] = maze[r][c] & ~BORDER.BOTTOM
         const removeRightBorder = (r, c) =>
             maze[r][c] = maze[r][c] & ~BORDER.RIGHT
-
         //Down
         if (toRow === fromRow + 1) {
             removeBottomBorder(fromRow, fromCol)
@@ -94,7 +94,7 @@ export function GenerateMaze(nbrOfRows, nbrOfCols) {
         DFS(0, 0, visited)
     }
 
-    // Generate maze with a random depth first traversal
+    // Generate maze with a random depth first search
     function DFS(row, col, visited) {
         visited.push([row, col])
         while (randomUnvisitedNeighbour(row, col, visited)) {
