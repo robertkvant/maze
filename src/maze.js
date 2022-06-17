@@ -6,7 +6,7 @@ const BORDER = {
     LEFT: 0b10000
 }
 
-export function GenerateMaze(nbrOfRows, nbrOfCols) {
+export function Maze(nbrOfRows, nbrOfCols) {
 
     // Create empty (nbrOfRows x nbrOfCols) array
     const maze = Array.from({ length: nbrOfRows }, e =>
