@@ -11,6 +11,7 @@ export class MazeCanvas {
         this.canvas = document.getElementById('canvas');
         this.ctx = canvas.getContext('2d');
         this.maze = maze.maze
+        maze.addObserver(this.walkerPositionChanged)
         this.width = (this.canvas.width / this.maze.length)
         this.init()
     }
@@ -81,6 +82,10 @@ export class MazeCanvas {
             }
         }
         this.saveState()
+    }
+
+    walkerPositionChanged(row,col){
+        console.log("Walker position changed",row,col)
     }
 }
 

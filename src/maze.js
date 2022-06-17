@@ -9,6 +9,8 @@ const BORDER = {
 export class Maze {
 
     constructor(nbrOfRows, nbrOfCols){
+        // Observers notified when walker position is changed
+        this.observers = []
         // Create empty (nbrOfRows x nbrOfCols) array
         this.maze = Array.from({ length: nbrOfRows }, e =>
             Array.from({ length: nbrOfCols }, e => 0));
@@ -110,6 +112,17 @@ export class Maze {
     // (toRow, toCol)
     walkTheMaze(fromRow, fromCol, toRow, toCol){
         this.maze[fromRow][fromCol] = this.maze[fromRow][fromCol] | 0b00001
+        this.notifyObservers(toRow,toCol)
+    }
+
+    // Add observer
+    addObserver(fn){
+        this.observers.push(fn);
+    }
+
+    // Notify observers
+    notifyObservers(row,col){
+        this.observers.forEach((fn) => fn(row,col))
     }
 }
 
