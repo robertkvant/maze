@@ -10,7 +10,7 @@ export class MazeCanvas {
     constructor(maze) {
         this.canvas = document.getElementById('canvas');
         this.ctx = canvas.getContext('2d');
-        this.width = (500 / maze.length)
+        this.width = (this.canvas.width / maze.length)
         this.maze = maze
         this.init()
     }
