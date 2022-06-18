@@ -33,7 +33,7 @@ export class Maze {
 
         //Generate maze
         this.createMaze()
-        this.initCircle()
+        this.placeCircle(0,0)
     }
 
     // Returns adjacent cells row and column position 
@@ -150,17 +150,9 @@ export class Maze {
         }
     }
 
-    // Place 'square' at position (0,0)
-    initCircle() {
+    // PLace circle at (x,y)
+    placeCircle(x,y){
         this.maze[0][0] |= CIRCLE
-    }
-
-    // Move square
-    moveCircle(fromRow, fromCol, toRow, toCol) {
-        if (!this.borderBetween(fromRow, fromCol, toRow, toCol)) {
-            this.maze[toRow][toCol] |= CIRCLE
-            this.maze[fromRow][fromCol] &= ~CIRCLE
-        }
     }
 }
 
