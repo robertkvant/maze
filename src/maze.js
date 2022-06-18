@@ -11,11 +11,6 @@ const CIRCLE = 0b00001
 export class Maze {
 
     constructor(nbrOfRows, nbrOfCols) {
-
-        if (nbrOfRows !== nbrOfCols) {
-            throw "Number of rows must be equal to number of columns";
-        }
-
         // Create empty (nbrOfRows x nbrOfCols) array
         this.maze = Array.from({ length: nbrOfRows }, e =>
             Array.from({ length: nbrOfCols }, e => 0));
