@@ -6,7 +6,7 @@ const BORDER = {
     LEFT: 0b10000
 }
 
-const SQUARE = 0b00001
+const CIRCLE = 0b00001
 
 export class Maze {
 
@@ -16,8 +16,6 @@ export class Maze {
             throw "Number of rows must be equal to number of columns";
         }
 
-        // Observers notified when walker position is changed
-        this.observers = []
         // Create empty (nbrOfRows x nbrOfCols) array
         this.maze = Array.from({ length: nbrOfRows }, e =>
             Array.from({ length: nbrOfCols }, e => 0));
@@ -40,7 +38,7 @@ export class Maze {
 
         //Generate maze
         this.createMaze()
-        this.initSquare()
+        this.initCircle()
     }
 
     // Returns adjacent cells row and column position 
@@ -158,28 +156,16 @@ export class Maze {
     }
 
     // Place 'square' at position (0,0)
-    initSquare() {
-        this.maze[0][0] |= SQUARE
-        this.notifyObservers()
+    initCircle() {
+        this.maze[0][0] |= CIRCLE
     }
 
     // Move square
-    moveSquare(fromRow, fromCol, toRow, toCol) {
+    moveCircle(fromRow, fromCol, toRow, toCol) {
         if (!this.borderBetween(fromRow, fromCol, toRow, toCol)) {
-            this.maze[toRow][toCol] |= SQUARE
-            this.maze[fromRow][fromCol] &= ~SQUARE
-            this.notifyObservers()
+            this.maze[toRow][toCol] |= CIRCLE
+            this.maze[fromRow][fromCol] &= ~CIRCLE
         }
-    }
-
-    // Add observer
-    addObserver(fn) {
-        this.observers.push(fn);
-    }
-
-    // Notify observers
-    notifyObservers() {
-        this.observers.forEach((fn) => fn())
     }
 }
 
