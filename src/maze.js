@@ -146,13 +146,13 @@ export class Maze {
     }
 
     // Place circle at (x,y)
-    placeCircle(x,y){
-        this.maze[x][y] |= CIRCLE
+    placeCircle(row,col){
+        this.maze[row][col] |= CIRCLE
     }
 
     // Clear circle at (x,y)
-    clearCircle(x,y){
-        this.maze[x][y] &= ~CIRCLE
+    clearCircle(row,col){
+        this.maze[row][col] &= ~CIRCLE
     }
 
     // Returns the array that represents the maze
