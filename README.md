@@ -19,3 +19,15 @@
 
 <img src="screenshot.png"/>
 
+<h3>Demo</h3>
+<a href="#">DEMO</a>
+
+<h3>How to run</h3>
+ <ul>
+  <li>Install Node.js</li>
+  <li>npm install</li>
+  <li>npm run start</li>
+  <li>Go to http://localhost:1234 in your browser</li>
+  <li>Build docker image with npm run docker-build</li>
+</ul> 
+
