@@ -1,3 +1,15 @@
 canvas { 
     border: 1px solid black; 
 }
+
+button {
+    font-size: 14px;
+}
+
+#messageDiv {
+    padding: 0.5em;
+}
+
+#div1 {
+    display: flex;
+}

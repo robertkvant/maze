@@ -2,7 +2,7 @@
 import { MazeCanvas } from "./canvas";
 import { Maze } from "./maze"
 
-const maze = new Maze(20, 20)
+let maze = new Maze(30, 30)
 MazeCanvas(maze.getMaze())
 
 function timeout(ms){
@@ -53,9 +53,16 @@ async function findPath(row, col, toRow, toCol,delay) {
     return false
 }
 
+const pathBtn = document.getElementById('pathBtn')
+const messageDiv = document.getElementById('messageDiv')
+messageDiv.innerHTML = "Find path from top left corner to bottom right corner"
+pathBtn.addEventListener("click", pathBtnEventhandler)
 
-function traverse(){
-    findPath(0, 0, 19, 19,200)
+function pathBtnEventhandler(){
+    pathBtn.disabled = true
+    findPath(0, 0, 29, 29,75).then((r) => {
+        if(r) {
+            messageDiv.innerHTML = "Path found"
+        }
+    })
 }
-
-traverse()
