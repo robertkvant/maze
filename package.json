@@ -1,11 +1,12 @@
 {
+  "version": "1.0.0",
   "name": "maze",
   "source": "src/index.html",
   "scripts": {
     "start": "parcel",
     "build": "npm run clean && parcel build",
     "clean": "rm -rf dist",
-    "docker-build": "npm run clean && npm run build && docker build -t maze ."
+    "docker-build": "npm run clean && npm run build && docker build -t maze-$npm_package_version ."
   },
   "devDependencies": {
     "parcel": "latest"
