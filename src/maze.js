@@ -1,12 +1,5 @@
 'use strict'
-const BORDER = {
-    TOP: 0b00010,
-    RIGHT: 0b00100,
-    BOTTOM: 0b01000,
-    LEFT: 0b10000
-}
-
-const CIRCLE = 0b00001
+import { BORDER, CIRCLE } from "./constants";
 
 export class Maze {
 
