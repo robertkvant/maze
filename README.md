@@ -17,3 +17,5 @@
   <li>Get more practice using <em>Promises</em>.</li>
 </ul> 
 
+<img src="screenshot.png"/>
+
