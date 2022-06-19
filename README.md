@@ -20,7 +20,7 @@
 <img src="screenshot.png"/>
 
 <h3>Demo</h3>
-<a href="#">DEMO</a>
+<a href="http://web.kv4nt.eu">DEMO</a>
 
 <h3>How to run</h3>
  <ul>
