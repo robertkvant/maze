@@ -13,3 +13,13 @@ button {
 #div1 {
     display: flex;
 }
+
+p {
+    font-size: small;
+}
+
+hr {
+    width: 25%;
+    margin-left: 0;
+    border-top-style:dotted;
+}
