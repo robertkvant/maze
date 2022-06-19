@@ -62,7 +62,7 @@ function pathBtnEventhandler(){
     pathBtn.disabled = true
     findPath(0, 0, 29, 29,75).then((r) => {
         if(r) {
-            messageDiv.innerHTML = "Path found"
+            messageDiv.innerHTML = "Path found!"
         }
     })
 }

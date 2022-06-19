@@ -16,10 +16,14 @@ button {
 
 p {
     font-size: small;
+    margin-bottom: 0;
+}
+
+a {
+    font-size: small;
 }
 
 hr {
-    width: 25%;
     margin-left: 0;
     border-top-style:dotted;
 }
