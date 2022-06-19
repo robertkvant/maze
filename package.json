@@ -3,7 +3,9 @@
   "source": "src/index.html",
   "scripts": {
     "start": "parcel",
-    "build": "parcel build"
+    "build": "npm run clean && parcel build",
+    "clean": "rm -rf dist",
+    "docker-build": "npm run clean && npm run build && docker build -t maze ."
   },
   "devDependencies": {
     "parcel": "latest"
