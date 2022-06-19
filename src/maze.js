@@ -50,21 +50,21 @@ export class Maze {
         )
     }
 
-    // Checks if (nRow,nCol) is a neighbour to (row,col)
-    isNeighbour(nRow, nCol, row, col) {
+    // Checks if (nRow,nCol) is adjacent to (row,col)
+    isAdjacentCell(nRow, nCol, row, col) {
         const n = this.adjacentcells(row, col)
         return n.some((x) => x[0] === nRow
             && x[1] === nCol)
     }
 
-    // Get random element from array
+    // Get random element from array 'arr'
     getRandomElement(arr) {
         const rand = Math.floor(Math.random() * arr.length);
         return arr[rand]
     }
 
-    // Return random unvisited neighbour
-    randomUnvisitedNeighbour(row, col, visited) {
+    // Return random unvisited adjacent cell
+    randomUnvisitedCell(row, col, visited) {
         let n = this.adjacentcells(row, col).filter((a) =>
             visited.every((e) =>
                 a[0] !== e[0] ||
@@ -76,16 +76,17 @@ export class Maze {
 
     // Remove border between (fromRow,fromCol) and (toRow,toCol)
     removeBorder(fromRow, fromCol, toRow, toCol) {
+
+        if (!this.isAdjacentCell(toRow, toCol, fromRow, fromCol)) {
+            throw `(${fromRow},${fromCol}) is not an adjacent cell`
+        }
+
         const removeBottomBorder = (r, c) =>
             this.maze[r][c] = this.maze[r][c]
             & ~BORDER.BOTTOM
         const removeRightBorder = (r, c) =>
             this.maze[r][c] = this.maze[r][c]
             & ~BORDER.RIGHT
-
-        if (!this.isNeighbour(toRow, toCol, fromRow, fromCol)) {
-            throw "Not neighbours!";
-        }
 
         //Down
         if (toRow === fromRow + 1) {
@@ -107,14 +108,15 @@ export class Maze {
 
     // Checks if there is a border between the two cells
     borderBetween(fromRow, fromCol, toRow, toCol) {
+        
+        if (!this.isAdjacentCell(toRow, toCol, fromRow, fromCol)) {
+            throw `(${fromRow},${fromCol}) is not an adjacent cell`
+        }
+
         const hasBottomBorder = (r, c) =>
             (this.maze[r][c] & BORDER.BOTTOM) !== 0
         const hasRightBorder = (r, c) =>
             (this.maze[r][c] & BORDER.RIGHT) !== 0
-
-        if (!this.isNeighbour(toRow, toCol, fromRow, fromCol)) {
-            throw "Not neighbours!";
-        }
 
         //Down
         if (toRow === fromRow + 1) {
@@ -143,16 +145,26 @@ export class Maze {
     // Generate a maze with a random depth first search
     DFS(row, col, visited) {
         visited.push([row, col])
-        while (this.randomUnvisitedNeighbour(row, col, visited)) {
-            let n = this.randomUnvisitedNeighbour(row, col, visited)
+        while (this.randomUnvisitedCell(row, col, visited)) {
+            let n = this.randomUnvisitedCell(row, col, visited)
             this.removeBorder(row, col, n[0], n[1])
             this.DFS(n[0], n[1], visited)
         }
     }
 
-    // PLace circle at (x,y)
+    // Place circle at (x,y)
     placeCircle(x,y){
-        this.maze[0][0] |= CIRCLE
+        this.maze[x][y] |= CIRCLE
+    }
+
+    // Clear circle at (x,y)
+    clearCircle(x,y){
+        this.maze[x][y] &= ~CIRCLE
+    }
+
+    // Returns the array that represents the maze
+    getMaze(){
+        return this.maze
     }
 }
 
