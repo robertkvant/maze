@@ -37,7 +37,7 @@ export class Maze {
     }
 
     // Returns adjacent cells row and column position 
-    getNeighbours(row, col) {
+    adjacentcells(row, col) {
         let c = []
         c.push([row - 1, col])
         c.push([row, col + 1])
@@ -52,7 +52,7 @@ export class Maze {
 
     // Checks if (nRow,nCol) is a neighbour to (row,col)
     isNeighbour(nRow, nCol, row, col) {
-        const n = this.getNeighbours(row, col)
+        const n = this.adjacentcells(row, col)
         return n.some((x) => x[0] === nRow
             && x[1] === nCol)
     }
@@ -65,7 +65,7 @@ export class Maze {
 
     // Return random unvisited neighbour
     randomUnvisitedNeighbour(row, col, visited) {
-        let n = this.getNeighbours(row, col).filter((a) =>
+        let n = this.adjacentcells(row, col).filter((a) =>
             visited.every((e) =>
                 a[0] !== e[0] ||
                 a[1] !== e[1]
