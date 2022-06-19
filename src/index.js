@@ -2,8 +2,14 @@
 import { MazeCanvas } from "./canvas";
 import { Maze } from "./maze"
 
-const maze = new Maze(50, 50)
+const maze = new Maze(20, 20)
 MazeCanvas(maze.getMaze())
+
+function timeout(ms){
+    return new Promise((resolve) => 
+        setTimeout(() => {resolve()}, ms)
+    )
+}
 
 const visited = []
 
@@ -20,11 +26,12 @@ function getNeighbours(row, col) {
     )
 }
 
-function findPath(row, col, toRow, toCol) {
+async function findPath(row, col, toRow, toCol,delay) {
     if (isVisited(row, col)) {
         return false
     }
 
+    await timeout(delay)
     maze.placeCircle(row,col)
 
     if (row === toRow && col === toCol) {
@@ -35,14 +42,20 @@ function findPath(row, col, toRow, toCol) {
 
     let n = getNeighbours(row, col)
     for (let i = 0; i < n.length; i++) {
-        if (findPath(n[i][0], n[i][1], toRow, toCol)) {
+        if (await findPath(n[i][0], n[i][1], 
+                toRow, toCol,delay)) {
             return true
         }
     }
 
+    await timeout(delay)
     maze.clearCircle(row,col)
     return false
 }
 
-console.log(findPath(0, 0, 49, 49))
 
+function traverse(){
+    findPath(0, 0, 19, 19,200)
+}
+
+traverse()
