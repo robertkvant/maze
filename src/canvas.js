@@ -90,6 +90,10 @@ export function MazeCanvas(maze) {
                 }
             }
         }
+        ctx.font = '18px serif';
+        ctx.fillStyle = 'rgba(255, 0, 127, 1)';
+        ctx.fillText('A', 2, 15);
+        ctx.fillText('B', canvas.width - 15, canvas.height - 2);
         window.requestAnimationFrame(draw);
     }
 }

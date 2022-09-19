@@ -55,7 +55,7 @@ async function findPath(row, col, toRow, toCol,delay) {
 
 const pathBtn = document.getElementById('pathBtn')
 const messageDiv = document.getElementById('messageDiv')
-messageDiv.innerHTML = "Find path from top left corner to bottom right corner"
+messageDiv.innerHTML = "Find path from A to B"
 pathBtn.addEventListener("click", pathBtnEventhandler)
 
 function pathBtnEventhandler(){

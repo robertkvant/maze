@@ -48,7 +48,7 @@ export class Maze {
 
         //Generate maze
         this.createMaze()
-        this.placeCircle(0,0)
+        //this.placeCircle(0,0)
     }
 
     // Returns adjacent cells row and column position 
